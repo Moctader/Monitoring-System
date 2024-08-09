@@ -1,6 +1,17 @@
 version: '3.7'
 
 services:
+  python-app:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/models:/app/models
+      - ./app/customer_data.csv:/app/customer_data.csv
+    depends_on:
+      - prometheus
+
   prometheus:
     image: prom/prometheus
     volumes:
@@ -14,3 +25,5 @@ services:
       - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
